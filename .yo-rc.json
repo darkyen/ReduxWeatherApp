@@ -1,0 +1,7 @@
+{
+  "generator-react-webpack": {
+    "appName": "weatherApp",
+    "style": "scss",
+    "postcss": false
+  }
+}
