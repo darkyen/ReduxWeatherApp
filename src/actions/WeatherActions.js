@@ -1,23 +1,15 @@
 import {createAction} from 'redux-actions';
 import {WeatherAPI} from 'lib/api';
-import WeatherActions from 'constants/WeatherConstants';
+import WeatherConstants from 'constants/WeatherConstants';
 
 const getWeatherByLocation = createAction(
-  WeatherActions.GET_WEATHER_BY_LOCA,
+  WeatherConstants.GET_WEATHER_BY_LOCA,
   WeatherAPI.getWeatherByLocation
 );
 
-export {getWeatherByLocation};
-
-const getWeatherByName = createAction(
-  WeatherActions.GET_WEATHER_BY_NAME,
-  WeatherAPI.getWeatherByName
+const getWeatherByZIP = createAction(
+  WeatherConstants.GET_WEATHER_BY_ZIP,
+  WeatherAPI.getWeatherByZIP
 );
 
-export {getWeatherByName};
-
-const clearWeather = createAction(
-  WeatherActions.CLEAR_WEATHER
-);
-
-export {clearWeather};
+export {getWeatherByZIP, getWeatherByLocation};

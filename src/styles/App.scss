@@ -1,2 +1,33 @@
 /* Base Application Styles */
 @import '../../node_modules/milligram/dist/milligram.css';
+body{
+  margin: 0px;
+}
+
+.app{
+  &-modal{
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+    padding: 2.5rem 3rem 0;
+    transform: translateY(100%);
+    transition: transform 50ms;
+
+    &__options{
+      margin: 0px -3rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    &--open{
+      transform: translateY(0%);
+    }
+  }
+}
+
+label{
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+select, input[type="text"]{
+  border-radius: 0px;
+}

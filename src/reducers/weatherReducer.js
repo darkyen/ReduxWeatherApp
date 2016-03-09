@@ -3,19 +3,14 @@ import {resolve, reject, request} from 'redux-promised';
 
 const r = {};
 
-r[resolve(WeatherActions.GET_WEATHER_BY_NAME)] =
+r[resolve(WeatherActions.GET_WEATHER_BY_ZIP)] =
 r[resolve(WeatherActions.GET_WEATHER_BY_LOCA)] = (state, action) => {
   const {payload} = action;
   const {weather} = state;
   const updates = {};
-  try{
-    updates.data = payload.json();
-    updates.error = null;
-  }catch(e){
-    updates.error = {
-      message: 'Error while loading data'
-    };
-  }
+
+  updates.current = payload;
+  updates.error = null;
   updates.isLoading = false;
 
   const updatedWeather = Object.assign({}, weather, updates);
@@ -25,15 +20,14 @@ r[resolve(WeatherActions.GET_WEATHER_BY_LOCA)] = (state, action) => {
   });
 }
 
-r[request(WeatherActions.GET_WEATHER_BY_NAME)] =
-r[request(WeatherActions.GET_WEATHER_BY_LOCA)] = (state, action) => {
-  const {query, source}  = action.meta;
+r[request(WeatherActions.GET_WEATHER_BY_ZIP)] =
+r[request(WeatherActions.GET_WEATHER_BY_LOCA)] = (state) => {
   const {weather} = state;
 
   const updatedWeather = Object.assign({}, weather, {
     isLoading: true,
-    source: source,
-    query: query,
+    current: {},
+    forecast: {},
     data: null
   });
 
@@ -42,7 +36,7 @@ r[request(WeatherActions.GET_WEATHER_BY_LOCA)] = (state, action) => {
   });
 }
 
-r[reject(WeatherActions.GET_WEATHER_BY_NAME)] =
+r[reject(WeatherActions.GET_WEATHER_BY_ZIP)] =
 r[reject(WeatherActions.GET_WEATHER_BY_LOCA)] = (state, action) => {
   const {error}   = action;
   const {weather} = state;

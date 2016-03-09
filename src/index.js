@@ -1,22 +1,37 @@
 import 'core-js/fn/object/assign';
+import 'whatwg-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
 import App from 'components/Main';
-
-import { Router, Route, browserHistory } from 'react-router'
-
 import {handleActions} from 'redux-actions';
 import weatherReducers from 'reducers/weatherReducer';
 // import autoCompleteReducers from 'reducers/autoCompleteReducers';
 import {createStore, applyMiddleware} from 'redux';
+import {Provider} from 'react-redux';
 import promiseMiddleware from 'redux-promised';
+let oldState = null;
 
-const defaultState = {
-  weather: {
+// Try rehydrating
+if( localStorage.oldState ) {
+  try{
+    oldState = JSON.parse(localStorage.oldState);
+  }catch(e){
+    console.log('Invalid state found in store');
+  }
+}
+
+const defaultState = oldState || {
+  app: {
+    hasPermission: false,
+    firstRun: true,
     source: '',
-    query: '',
-    data: {},
-    isRequesting: false
+    query: ''
+  },
+  weather: {
+    isRequesting: false,
+    forecast: {},
+    current: {}
   },
   autoComplete: {
     suggestions : [],
@@ -25,28 +40,17 @@ const defaultState = {
 };
 
 const compoundReducer = handleActions({
-  // ...autoCompleteReducers,
+  // ...appUIReducers,
   ...weatherReducers
 }, defaultState);
 
-createStore(compoundReducer, applyMiddleware(promiseMiddleware));
+const store = createStore(compoundReducer, applyMiddleware(promiseMiddleware));
 // Render the main component into the dom
 // ReactDOM.render(<App />, document.getElementById('app'));
-const noop = ()=>{};
 
-const NoMatch = noop,
-      GeoLocation = noop,
-      QueryLocation = noop,
-      WeatherPage =  noop,
-      AppContainer = noop;
-
+Modal.setAppElement(document.getElementById('modal-box'));
 ReactDOM.render((
-  <Router history={browserHistory}>
-    <Route path="/" component={App}>
-      <Route path="/" component={GeoLocation} />
-      <Route path="/name" component={QueryLocation}></Route>
-      <Route path="/weather" component={WeatherPage}></Route>
-      <Route path="*" component={NoMatch} />
-    </Route>
-  </Router>
+  <Provider store={store}>
+    <App />
+  </Provider>
 ), document.getElementById('app'));

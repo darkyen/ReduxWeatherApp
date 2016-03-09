@@ -24,6 +24,12 @@ export function deleteTodo(id) {
     id
   };
 }
+
+// with our helper
+const someAction = createAction(
+  SomeConstant.SOME_NAME,
+  WeatherAPI.someAPICall
+);
 ```
 
 As you can see redux actions are simply functions that represent a
