@@ -1,22 +1,38 @@
-require('normalize.css');
-require('styles/App.css');
 
-import React from 'react';
+import 'styles/App.scss';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {
+  getWeatherByName,
+  getWeatherByLocation,
+  clearWeather
+} from 'actions/WeatherActions';
+const yeomanImage = require('../images/yeoman.png');
 
-let yeomanImage = require('../images/yeoman.png');
+const mapStateToProps = (state) => {
+  return state;
+};
 
-class AppComponent extends React.Component {
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLocation: (coor) => dispatch(getWeatherByLocation(coor)),
+    onQuery: (name) => dispatch(getWeatherByName(name)),
+    onBack: () => dispatch(clearWeather())
+  }
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
+class App extends Component {
   render() {
     return (
       <div className="index">
-        <img src={yeomanImage} alt="Yeoman Generator" />
-        <div className="notice">Please edit <code>src/components/Main.js</code> to get started!</div>
+        <img
+          src={yeomanImage}
+          alt="Yeoman Generator"
+        />
       </div>
     );
   }
 }
 
-AppComponent.defaultProps = {
-};
-
-export default AppComponent;
+export default App;

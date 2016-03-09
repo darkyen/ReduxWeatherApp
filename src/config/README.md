@@ -1,13 +1,15 @@
 # About this folder
 This folder holds configuration files for different environments.
-You can use it to provide your app with different settings based on the 
-current environment, e.g. to configure different API base urls depending on 
-whether your setup runs in dev mode or is built for distribution.
-You can include the configuration into your code like this:
+These to provide app with different settings based on the current
+environment, e.g. to configure different API base urls depending on
+when setup run in dev mode or is built for distribution.
+
+This was just done by the generator, so I kept it. Good for long
+projects.
 
 ```javascript
 let react = require('react/addons');
-let config = require('config');
+let config = require('/path/to/config');
 class MyComponent extends React.Component {
   constructor(props) {
     super(props);
