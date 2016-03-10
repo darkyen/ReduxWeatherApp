@@ -6,45 +6,39 @@ import Modal from 'react-modal';
 import App from 'components/Main';
 import {handleActions} from 'redux-actions';
 import weatherReducers from 'reducers/weatherReducer';
+import appUIReducers from 'reducers/appUIReducer';
 // import autoCompleteReducers from 'reducers/autoCompleteReducers';
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware, combineReducers, compose} from 'redux';
 import {Provider} from 'react-redux';
 import promiseMiddleware from 'redux-promised';
-let oldState = null;
+import WeatherConstants from 'constants/WeatherConstants';
+import createLogger from 'redux-logger';
+import ReduxSimpleStorage from 'redux-simple-localstorage';
 
-// Try rehydrating
-if( localStorage.oldState ) {
-  try{
-    oldState = JSON.parse(localStorage.oldState);
-  }catch(e){
-    console.log('Invalid state found in store');
-  }
-}
-
-const defaultState = oldState || {
+const {read, write} = ReduxSimpleStorage('redux-weather-data-store');
+const defaultState = read() || {
   app: {
+    source: WeatherConstants.SOURCE_LOCATION,
     hasPermission: false,
-    firstRun: true,
-    source: '',
     query: ''
   },
   weather: {
     isRequesting: false,
+    hasLoaded: false,
     forecast: {},
     current: {}
-  },
-  autoComplete: {
-    suggestions : [],
-    isLoading: false
   }
 };
 
-const compoundReducer = handleActions({
-  // ...appUIReducers,
-  ...weatherReducers
-}, defaultState);
+const logger = createLogger();
+const appUIReducer = handleActions(appUIReducers, defaultState.app);
+const weatherReducer = handleActions(weatherReducers, defaultState.weather);
+const rootReducer =   combineReducers({
+  weather: weatherReducer,
+  app: appUIReducer
+});
 
-const store = createStore(compoundReducer, applyMiddleware(promiseMiddleware));
+const store = createStore(rootReducer, applyMiddleware(promiseMiddleware, logger, write));
 // Render the main component into the dom
 // ReactDOM.render(<App />, document.getElementById('app'));
 

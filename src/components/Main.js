@@ -14,6 +14,7 @@ import {
 import GeoLocationView from './GeoLocationView';
 import ZipQuery from './ZipQuery';
 import Weather from './Weather';
+import WeatherConstants from 'constants/WeatherConstants';
 
 const mapStateToProps = (state) => {
   return state;
@@ -51,22 +52,29 @@ const baseStyles = {
 const App = connect(mapStateToProps, mapDispatchToProps)(
   class extends Component {
     render() {
-      const weather = this.props.weather.isLoading === false
-                        ? <Weather {...this.props.weather} />
-                      : <div>Loading...</div>;
+      const {weather, app} = this.props
+      const {isRequesting, hasLoaded} = weather;
+      const {hasPermission, query} = app;
+      const weatherComponent = hasLoaded === true
+                        ? <Weather {...weather} />
+                        : <div>Loading...</div>;
+      const pickerIsLocation  = app.source === WeatherConstants.SOURCE_LOCATION;
+      const shouldShowPickers = pickerIsLocation ? hasPermission === false : !query;
+      console.log(isRequesting);
       return (
         <div className="app">
           <GeoLocationView
-            isOpen={true}
+            isOpen={pickerIsLocation && shouldShowPickers}
             style={baseStyles}
             onLocation={this.props.onLocation}
             onLocationDenied={this.props.onLocationDenied}
           ></GeoLocationView>
           <ZipQuery
-            isOpen={false}
+            isOpen={!pickerIsLocation && shouldShowPickers}
             style={baseStyles}
+            onQuery={this.props.onQuery}
           ></ZipQuery>
-          {weather}
+          {weatherComponent}
         </div>
       );
     }

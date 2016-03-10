@@ -17,9 +17,9 @@ const WeatherAPI = {
   UNIT_SYSTEM: config.defaultUnitSystem,
   baseUrl: () => `http://api.openweathermap.org/data/2.5/weather?APPID=${config.OWM_APP_ID}&units=${WeatherAPI.UNIT_SYSTEM}`,
   urlByLatLong : (lat, long)  => `${WeatherAPI.baseUrl()}&lat=${lat}&lon=${long}`,
-  urlByZip: (zip) => `${WeatherAPI.baseUrl()}&zip=${zip}`,
+  urlByZip: (zip, country) => `${WeatherAPI.baseUrl()}&zip=${zip},${country}`,
   getWeatherByZIP(zip, country) {
-    const url = WeatherAPI.urlByName(zip, country);
+    const url = WeatherAPI.urlByZip(zip, country);
     return fetch(url).then(handleHTTPResponse).then(hydrateJSON);
   },
   getWeatherByLocation({latitude, longitude}) {
