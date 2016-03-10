@@ -1,20 +1,7 @@
 import React, {Component} from 'react';
 import Modal from 'react-modal';
 
-const locationOpts = {
-  enableHighAccuracy: true,
-  timeout: 15000,
-  maximumAge: 0
-}
-
 export default class GeoLocationView extends Component{
-  accquireGeoLocation(){
-    navigator.geolocation.getCurrentPosition(
-      pos => this.props.onLocation(pos.coords),
-      err => this.props.onLocationDenied(err),
-      locationOpts
-    );
-  }
 
   render(){
     const {onLocationDenied, style, isOpen} = this.props;
@@ -34,7 +21,7 @@ export default class GeoLocationView extends Component{
                   className="button button-clear"
                 >Deny</button>
                 <button
-                  onClick={() => this.accquireGeoLocation()}
+                  onClick={() => this.props.onLocationAccepted()}
                   className="button button-clear"
                 >Allow</button>
               </div>

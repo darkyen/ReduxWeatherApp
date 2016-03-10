@@ -1,10 +1,179 @@
 /* Base Application Styles */
 @import '../../node_modules/milligram/dist/milligram.css';
+
+body {
+  background: #efefef;
+}
+
+.preloader {
+	position: absolute;
+	margin-left: -55px;
+	margin-top: -100px;
+	height: 110px;
+	width: 110px;
+	left: 50%;
+	top: 50%;
+}
+
+svg {
+  width: 110px;
+  height: 110px;
+}
+
+path {
+  stroke: #9ea1a4;
+  stroke-width: 0.25;
+  fill: #241E20;
+}
+
+.cloud {
+  position: relative;
+  z-index: 2;
+}
+
+.cloud path {
+  fill: #efefef;
+}
+
+.sun {
+  margin-left: -10px;
+  margin-top: 6px;
+  opacity: 0;
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  left: 45px;
+  top: 15px;
+  z-index: 1;
+
+  animation-name: rotate;
+  animation-duration: 16000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.sun path {
+  stroke-width: 0.18;
+  fill: #9ea1a4;
+}
+
+
+@keyframes rotate {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
+/* Rain */
+.rain {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  margin-top: -32px;
+  margin-left: 19px;
+}
+
+.drop {
+  opacity: 1;
+  background: #9ea1a4;
+  display: block;
+  float: left;
+  width: 3px;
+  height: 10px;
+  margin-left: 4px;
+  border-radius: 0px 0px 6px 6px;
+
+  animation-name: drop;
+  animation-duration: 350ms;
+  animation-iteration-count: infinite;
+}
+
+.drop:nth-child(1) {
+  animation-delay: -130ms;
+}
+
+.drop:nth-child(2) {
+  animation-delay: -240ms;
+}
+
+.drop:nth-child(3) {
+  animation-delay: -390ms;
+}
+
+.drop:nth-child(4) {
+  animation-delay: -525ms;
+}
+
+.drop:nth-child(5) {
+  animation-delay: -640ms;
+}
+
+.drop:nth-child(6) {
+  animation-delay: -790ms;
+}
+
+.drop:nth-child(7) {
+  animation-delay: -900ms;
+}
+
+.drop:nth-child(8) {
+  animation-delay: -1050ms;
+}
+
+.drop:nth-child(9) {
+  animation-delay: -1130ms;
+}
+
+.drop:nth-child(10) {
+  animation-delay: -1300ms;
+}
+
+
+@keyframes drop {
+  50% {
+    height: 45px;
+    opacity: 0;
+  }
+
+  51% {
+    opacity: 0;
+  }
+
+  100% {
+    height: 1px;
+    opacity: 0;
+  }
+}
+
+.text {
+	font-family: Helvetica, 'Helvetica Neue', sans-serif;
+	letter-spacing: 1px;
+	text-align: center;
+	margin-left: -43px;
+	font-weight: bold;
+	margin-top: 20px;
+	font-size: 11px;
+	color: #a0a0a0;
+	width: 200px;
+}
+
 body{
   margin: 0px;
 }
 
 .app{
+  // To fix the svg bug
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+
   &-modal{
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
     padding: 2.5rem 3rem 0;
@@ -23,6 +192,55 @@ body{
   }
 }
 
+.app__weather{
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.app__reset{
+  text-align: center;
+}
+
+.weather{
+    padding: 3rem;
+    &__city, &__desc, &__temp, &__clear{
+      text-align: center;
+    }
+
+    &__city, &__desc{
+      margin: 1.0rem;
+    }
+
+    &__temp{
+      margin: 2.0rem 0 1.0rem;
+    }
+
+    &__temp::after{
+      font-size: 2.4rem;
+      color: #686868;
+      padding: 0px 8px;
+    }
+
+    &__temp.metric::after{
+      content: 'C';
+    }
+
+    &__temp.imperial::after{
+      content: 'F';
+    }
+
+    &__temp.absolute::after{
+      content: 'K';
+    }
+
+    &__desc{
+      text-transform: capitalize;
+    }
+}
+
 label{
   text-transform: uppercase;
   font-size: 10px;
@@ -30,4 +248,8 @@ label{
 
 select, input[type="text"]{
   border-radius: 0px;
+}
+
+.ReactModalPortal{
+  z-index: 1000;
 }

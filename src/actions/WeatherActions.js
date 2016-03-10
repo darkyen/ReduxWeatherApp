@@ -1,7 +1,6 @@
 import {createAction} from 'redux-actions';
 import {WeatherAPI} from 'lib/api';
 import WeatherConstants from 'constants/WeatherConstants';
-const identityFn = (x) => x;
 
 const getWeatherByLocation = createAction(
   WeatherConstants.GET_WEATHER_BY_LOCA,

@@ -13,6 +13,14 @@ r[AppConstants.APP_LOCATION_FAILED] = (app) => {
   });
 }
 
+r[AppConstants.CLEAR_WEATHER] = (app) => {
+  return deepAssign({}, app, {
+    source: WeatherConstants.SOURCE_LOCATION,
+    hasPermission: false,
+    query: ''
+  });
+}
+
 r[request(WeatherConstants.GET_WEATHER_BY_LOCA)] = (app) => {
   console.log("Setting permission to true");
   return deepAssign({}, app, {

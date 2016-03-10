@@ -22,12 +22,11 @@ const defaultState = read() || {
     hasPermission: false,
     query: ''
   },
-  weather: {
-    isRequesting: false,
-    hasLoaded: false,
-    forecast: {},
-    current: {}
-  }
+  weather : {
+   isRequesting: false,
+   forecast: null,
+   current: null
+ }
 };
 
 const logger = createLogger();

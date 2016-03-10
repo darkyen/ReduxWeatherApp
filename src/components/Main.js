@@ -16,6 +16,12 @@ import ZipQuery from './ZipQuery';
 import Weather from './Weather';
 import WeatherConstants from 'constants/WeatherConstants';
 
+const locationOpts = {
+  enableHighAccuracy: true,
+  timeout: 15000,
+  maximumAge: 0
+}
+
 const mapStateToProps = (state) => {
   return state;
 };
@@ -24,7 +30,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onLocationDenied: (err) => { dispatch(locationFailed(err)) },
     onLocation: (coor) => { dispatch(getWeatherByLocation(coor)) },
-    onQuery: (zip, country) => dispatch(getWeatherByZIP(zip,country)),
+    onZipCode: (zip, country) => dispatch(getWeatherByZIP(zip,country)),
     onBack: () => dispatch(clearWeather())
   }
 }
@@ -51,30 +57,51 @@ const baseStyles = {
 
 const App = connect(mapStateToProps, mapDispatchToProps)(
   class extends Component {
+    accquireGeoLocation(){
+      navigator.geolocation.getCurrentPosition(
+        pos => this.props.onLocation(pos.coords),
+        err => this.props.onLocationDenied(err),
+        locationOpts
+      );
+    }
+
+    switchToZipCode(){
+      this.props.onLocationDenied();
+    }
+
+    setZipCode(zip, country){
+      this.props.onZipCode(zip, country);
+    }
+
+    componentDidMount(){
+      const {hasPermission, query} = this.props.app;
+      if( hasPermission ){
+        this.accquireGeoLocation();
+      }
+      if( query ){
+        this.props.onZipCode(query.zip, query.country);
+      }
+    }
+
     render() {
       const {weather, app} = this.props
-      const {isRequesting, hasLoaded} = weather;
       const {hasPermission, query} = app;
-      const weatherComponent = hasLoaded === true
-                        ? <Weather {...weather} />
-                        : <div>Loading...</div>;
       const pickerIsLocation  = app.source === WeatherConstants.SOURCE_LOCATION;
       const shouldShowPickers = pickerIsLocation ? hasPermission === false : !query;
-      console.log(isRequesting);
       return (
         <div className="app">
           <GeoLocationView
             isOpen={pickerIsLocation && shouldShowPickers}
             style={baseStyles}
-            onLocation={this.props.onLocation}
-            onLocationDenied={this.props.onLocationDenied}
+            onLocationAccepted={e => this.accquireGeoLocation()}
+            onLocationDenied={e => this.switchToZipCode()}
           ></GeoLocationView>
           <ZipQuery
             isOpen={!pickerIsLocation && shouldShowPickers}
             style={baseStyles}
-            onQuery={this.props.onQuery}
+            onQuery={(zip, country) => this.setZipCode(zip, country)}
           ></ZipQuery>
-          {weatherComponent}
+          <Weather {...weather} onReset={this.props.onBack} />
         </div>
       );
     }
