@@ -28,6 +28,11 @@ const DisplayLoaderSheet = (props) => {
     marginTop: 0
   };
 
+  // This was taken from
+  // http://authenticweather.com/
+  // ported to match react's non svgns friendly
+  // jsx.
+
   return <div className="preloader" style={preloaderStyle}>
           <svg version="1.1" className="sun" x="0px" y="0px" width="10px" height="10px" viewBox="0 0 10 10" enable-background="new 0 0 10 10" style={sunStyle}>
             <g>
