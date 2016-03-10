@@ -219,9 +219,10 @@ body{
     }
 
     &__temp::after{
-      font-size: 2.4rem;
+      font-size: 1.4rem;
       color: #686868;
-      padding: 0px 8px;
+      padding: 0px 3px;
+      vertical-align: text-top;
     }
 
     &__temp.metric::after{

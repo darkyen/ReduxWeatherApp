@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
+import {WeatherAPI} from 'lib/api';
 
 const CurrentWeather = ({name, main, weather, onReset}) => {
+  const unit = WeatherAPI.UNIT_SYSTEM;
   return <div className="weather">
           <h4 className="weather__city">{name}</h4>
           <h6 className="weather__desc">{weather[0].description}</h6>
-          <h2 className="weather__temp">{main.temp}</h2>
+          <h2 className={"weather__temp " + unit}>{main.temp}</h2>
           <div className="weather__clear">
             <button onClick={onReset} className="button-clear">Reset</button>
           </div>

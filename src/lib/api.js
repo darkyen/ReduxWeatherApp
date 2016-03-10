@@ -29,15 +29,3 @@ const WeatherAPI = {
 };
 
 export {WeatherAPI};
-
-const PlacesAPI = {
-  BASE_URL : 'https://'
-  // getSuggestions(query){
-  //
-  // },
-  // getPlace(query){
-  //
-  // }
-};
-
-export {PlacesAPI};
